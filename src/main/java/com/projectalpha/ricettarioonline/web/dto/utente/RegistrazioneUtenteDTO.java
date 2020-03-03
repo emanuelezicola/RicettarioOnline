@@ -3,7 +3,6 @@ package com.projectalpha.ricettarioonline.web.dto.utente;
 import com.projectalpha.ricettarioonline.models.Utente;
 import org.apache.commons.lang3.StringUtils;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

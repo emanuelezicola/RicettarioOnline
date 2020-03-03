@@ -1,11 +1,12 @@
 package com.projectalpha.ricettarioonline.web.restcontroller;
 
+import com.projectalpha.ricettarioonline.exceptions.DecodingPasswordException;
 import com.projectalpha.ricettarioonline.models.Token;
 import com.projectalpha.ricettarioonline.models.Utente;
 import com.projectalpha.ricettarioonline.service.token.TokenService;
 import com.projectalpha.ricettarioonline.service.utente.UtenteService;
 import com.projectalpha.ricettarioonline.utils.Status;
-import com.projectalpha.ricettarioonline.web.dto.RequestDTO;
+import com.projectalpha.ricettarioonline.web.dto.RequestRegistrationDTO;
 import com.projectalpha.ricettarioonline.web.dto.ResponseDTO;
 import com.projectalpha.ricettarioonline.web.dto.utente.RegistrazioneUtenteDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,22 +37,22 @@ public class UtenteResource {
 
     /**
      * Metodo che registra un nuovo utente.
-     * @param requestDTO oggetto che contiene un body con le informazioni inserite dall'utente ed un token null
+     * @param requestRegistrationDTO oggetto che contiene un body con le informazioni inserite dall'utente ed un token null
      * @return una response contenente uno status (BAD_REQUEST, INTERNAL_SERVER_ERROR, OK), un token (null oppure valorizzato)
      * e un body contenente una lista di errori o un oggetto utente.
      */
     @PostMapping("/registrazione")
     @Produces({MediaType.APPLICATION_JSON})
-    public ResponseDTO registraNuovoUtente(@RequestBody RequestDTO requestDTO) {
+    public ResponseDTO registraNuovoUtente(@RequestBody RequestRegistrationDTO requestRegistrationDTO) throws DecodingPasswordException {
         //Controllo che la response sia ok
-        List<String> errors = RequestDTO.validateForRegistration(requestDTO);
+        List<String> errors = RequestRegistrationDTO.validateForRegistration(requestRegistrationDTO);
         if (!errors.isEmpty()) {
             return new ResponseDTO(Status.BAD_REQUEST, null, errors);
         }
 
         //Controllo che il campo body della response sia ok.
         //Salto il controllo del token perchè in registrazione non esiste ancora il token.
-        RegistrazioneUtenteDTO registrazioneUtenteDTO = (RegistrazioneUtenteDTO) requestDTO.getBody();
+        RegistrazioneUtenteDTO registrazioneUtenteDTO = requestRegistrationDTO.getUtenteDaRegistrare();
         errors = RegistrazioneUtenteDTO.validateDTO(registrazioneUtenteDTO);
         if (!errors.isEmpty()) {
             return new ResponseDTO(Status.BAD_REQUEST, null, errors);
@@ -78,8 +79,14 @@ public class UtenteResource {
                     "Prego inserire solo caratteri alfabetici");
         }
 
+        String password;
         //Controllo le password
-        String password = new String(Base64.getDecoder().decode(registrazioneUtenteDTO.getPassword()));
+        try {
+            password = new String(Base64.getDecoder().decode(registrazioneUtenteDTO.getPassword()));
+        } catch(IllegalArgumentException e) {
+            e.printStackTrace();
+            throw new DecodingPasswordException("Errore durante la decodifica della password");
+        }
         if (password.length() < 8) {
             errors.add("La password inserita è minore di otto caratteri");
         }
@@ -88,7 +95,13 @@ public class UtenteResource {
             errors.add("La password contiene caratteri speciali non ammessi");
         }
 
-        String passwordRepeat = new String(Base64.getDecoder().decode(registrazioneUtenteDTO.getPasswordRepeat()));
+        String passwordRepeat;
+        try {
+            passwordRepeat = new String(Base64.getDecoder().decode(registrazioneUtenteDTO.getPasswordRepeat()));
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            throw new DecodingPasswordException("Errore durante la decodifica della password");
+        }
         if (!passwordRepeat.equals(password)) {
             errors.add("La password di conferma non coincide con la password inserita precedentemente");
         }
