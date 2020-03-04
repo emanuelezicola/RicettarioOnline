@@ -5,6 +5,7 @@ import com.projectalpha.ricettarioonline.models.Utente;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public interface UtenteService {
 
     List<Utente> listAllUtenti() ;
