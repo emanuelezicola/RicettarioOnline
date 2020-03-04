@@ -184,7 +184,4 @@ public class UtenteResource {
         //TODO
         return null;
     }
-
-
-
 }
