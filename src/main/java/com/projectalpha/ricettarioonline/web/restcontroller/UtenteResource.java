@@ -9,6 +9,7 @@ import com.projectalpha.ricettarioonline.utils.Status;
 import com.projectalpha.ricettarioonline.web.dto.utente.LoggedUserDTO;
 import com.projectalpha.ricettarioonline.web.dto.utente.login.RequestLoginDTO;
 import com.projectalpha.ricettarioonline.web.dto.utente.login.UtenteLoginDTO;
+import com.projectalpha.ricettarioonline.web.dto.utente.logout.RequestLogoutDTO;
 import com.projectalpha.ricettarioonline.web.dto.utente.registrazione.RequestRegistrationDTO;
 import com.projectalpha.ricettarioonline.web.dto.ResponseDTO;
 import com.projectalpha.ricettarioonline.web.dto.utente.registrazione.RegistrazioneUtenteDTO;
@@ -170,6 +171,20 @@ public class UtenteResource {
 
         return new ResponseDTO(OK, token, loggedUserDTO);
     }
+
+
+    /**
+     * TODO
+     * @param requestLogoutDTO
+     * @return
+     */
+    @PostMapping("/logout")
+    @Produces({MediaType.APPLICATION_JSON})
+    public ResponseDTO doLogout(@RequestBody RequestLogoutDTO requestLogoutDTO) {
+        //TODO
+        return null;
+    }
+
 
 
 }
