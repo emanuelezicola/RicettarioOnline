@@ -1,33 +1,32 @@
 package com.projectalpha.ricettarioonline.web.dto.utente.logout;
 
 import com.projectalpha.ricettarioonline.models.Token;
+import com.projectalpha.ricettarioonline.web.dto.RequestDTO;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("unused")
-public class RequestLogoutDTO {
+public class RequestLogoutDTO extends RequestDTO {
 
-    private Token token;
-    private UtenteLogoutDTO loggingOutUser;
 
-    public RequestLogoutDTO() {}
-
-    public RequestLogoutDTO(Token token, UtenteLogoutDTO loggingOutUser) {
-        this.token = token;
-        this.loggingOutUser = loggingOutUser;
+    public RequestLogoutDTO() {
+        super();
     }
 
-    public Token getToken() {
-        return token;
+    public RequestLogoutDTO(Token token) {
+        super(token);
     }
 
-    public void setToken(Token token) {
-        this.token = token;
+    public static Map<String, String> validate(RequestLogoutDTO requestLogoutDTO) {
+        Map<String, String> errors = new HashMap<>();
+
+        if(requestLogoutDTO == null || requestLogoutDTO.token == null) {
+            errors.put("ALL", "I dati sono incongruenti");
+            return errors;
+        }
+
+        return errors;
     }
 
-    public UtenteLogoutDTO getLoggingOutUser() {
-        return loggingOutUser;
-    }
-
-    public void setLoggingOutUser(UtenteLogoutDTO loggingOutUser) {
-        this.loggingOutUser = loggingOutUser;
-    }
 }

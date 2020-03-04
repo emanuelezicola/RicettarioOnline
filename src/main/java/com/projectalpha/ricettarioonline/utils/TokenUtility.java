@@ -10,6 +10,11 @@ public class TokenUtility {
 
     public static boolean isValidToken(Token token) {
 
+        if(token == null || token.getId() == null || token.getDataScadenza() == null
+            || token.getValidToken() == null) {
+            return false;
+        }
+
         if (!token.getValidToken()) {
             return false;
         }
