@@ -168,7 +168,7 @@ public class UtenteResource {
         }
 
         LoggedUserDTO loggedUserDTO = new LoggedUserDTO(utenteByEmailAndPassword.getId(), utenteByEmailAndPassword.getNome(),
-                utenteByEmailAndPassword.getEmail(), utenteByEmailAndPassword.getPassword());
+                utenteByEmailAndPassword.getCognome(), utenteByEmailAndPassword.getEmail());
 
 
         return new ResponseEntity<>(new ResponseDTO(token, loggedUserDTO), OK);
