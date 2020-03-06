@@ -2,8 +2,6 @@ package com.projectalpha.ricettarioonline.web.dto.utente.registrazione;
 
 import com.projectalpha.ricettarioonline.exceptions.DecodingPasswordException;
 import com.projectalpha.ricettarioonline.models.Utente;
-import com.projectalpha.ricettarioonline.utils.Status;
-import com.projectalpha.ricettarioonline.web.dto.ResponseDTO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -106,18 +104,18 @@ public class RegistrazioneUtenteDTO {
 
         //Controllo integrità campi
         //Controllo la mail
-        if (!isValidEmail(registrazioneUtenteDTO.getEmail())) {
+        if (!isValidEmail(registrazioneUtenteDTO.email)) {
             errors.put("EMAIL", "La mail inserita non è una mail valida. Prego inserire una mail corretta");
         }
 
         //Controllo il nome
-        if (!containsOnlyLetters(registrazioneUtenteDTO.getNome())) {
+        if (!containsOnlyLetters(registrazioneUtenteDTO.nome)) {
             errors.put("NOME", "Il nome inserito contiene caratteri non ammessi come numeri e caratteri speciali. " +
                     "Prego inserire solo caratteri alfabetici");
         }
 
         //Controllo il cognome
-        if (!containsOnlyLetters(registrazioneUtenteDTO.getCognome())) {
+        if (!containsOnlyLetters(registrazioneUtenteDTO.cognome)) {
             errors.put("COGNOME", "Il cognome inserito contiene caratteri non ammessi come numeri e caratteri speciali. " +
                     "Prego inserire solo caratteri alfabetici");
         }
@@ -125,7 +123,7 @@ public class RegistrazioneUtenteDTO {
         String password;
         //Controllo le password
         try {
-            password = new String(Base64.getDecoder().decode(registrazioneUtenteDTO.getPassword()));
+            password = new String(Base64.getDecoder().decode(registrazioneUtenteDTO.password));
         } catch(IllegalArgumentException e) {
             e.printStackTrace();
             throw new DecodingPasswordException("Errore durante la decodifica della password");
@@ -140,7 +138,7 @@ public class RegistrazioneUtenteDTO {
 
         String passwordRepeat;
         try {
-            passwordRepeat = new String(Base64.getDecoder().decode(registrazioneUtenteDTO.getPasswordRepeat()));
+            passwordRepeat = new String(Base64.getDecoder().decode(registrazioneUtenteDTO.passwordRepeat));
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             throw new DecodingPasswordException("Errore durante la decodifica della password");
